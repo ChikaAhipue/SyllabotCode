@@ -19,14 +19,12 @@ import discord
 BASE_DIR = r"C:\Users\ahipu\Documents\Syllabot_Courses"
 INBOX_FOLDER = os.path.join(BASE_DIR, "Inbox")
 DISCORD_BOT_TOKEN = os.environ.get("SYLLABOT_DISCORD_BOT_TOKEN")
-
 DISCORD_USER_ID = int(
     os.environ.get(
         "SYLLABOT_DISCORD_USER_ID",
         "0"
     )
 )
-
 DISCORD_CHANNEL_ID = int(
     os.environ.get(
         "SYLLABOT_DISCORD_CHANNEL_ID",
@@ -75,16 +73,6 @@ async def on_ready():
 async def on_message(message):
     global discord_response
 
-    print("\n========== DISCORD MESSAGE ==========")
-    print("Message:", repr(message.content))
-    print("Author:", message.author)
-    print("Author ID:", message.author.id)
-    print("Is Bot:", message.author.bot)
-    print("Channel ID:", message.channel.id)
-    print("Expected User ID:", DISCORD_USER_ID)
-    print("Expected Channel ID:", DISCORD_CHANNEL_ID)
-    print("=====================================\n")
-
     if message.author.bot:
         return
 
@@ -114,7 +102,7 @@ async def on_message(message):
 
     discord_response_event.set()
 
-    print("[Discord DEBUG] EVENT SET")
+    print("[Discord DEBUG]")
 
 
 async def send_discord_message(message_text):
@@ -222,6 +210,7 @@ def wait_for_discord_response(
 
 
 def get_calendar_service():
+
     credentials = None
 
     if os.path.exists(GOOGLE_TOKEN_FILE):
@@ -319,6 +308,7 @@ def add_to_calendar(
         )
 
     except Exception as e:
+
         print(
             f"[Error] Could not add assignment "
             f"to Google Calendar: {e}"
@@ -403,9 +393,7 @@ def read_file(file_path: str) -> str:
             f"[Error] Could not read file: {e}"
         )
 
-        return (
-            f"Failed to read file due to error: {e}"
-        )
+        return f"Failed to read file due to error: {e}"
 
 
 @tool
@@ -438,9 +426,7 @@ def put_in_folder(
         )
 
         if os.path.exists(destination_path):
-            name, extension = os.path.splitext(
-                file_name
-            )
+            name, extension = os.path.splitext(file_name)
 
             timestamp = int(time.time())
 
@@ -465,6 +451,7 @@ def put_in_folder(
         )
 
     except Exception as e:
+
         print(
             f"[Error] Could not move file: {e}"
         )
@@ -539,6 +526,7 @@ ambiguous rather than making up an answer.
 
 
 def wait_for_file(file_path, timeout=30):
+
     start_time = time.time()
     previous_size = -1
 
@@ -693,15 +681,19 @@ DUE_TIME: <HH:MM or NONE>
         print("=" * 60)
         print(" ASSIGNMENT DETECTED")
         print("=" * 60)
+
         print(
             f"Assignment: {assignment_name}"
         )
+
         print(
             f"Due date:   {due_date}"
         )
+
         print(
             f"Due time:   {due_time}"
         )
+
         print("=" * 60)
 
         if due_date == "NONE":
@@ -885,6 +877,7 @@ if __name__ == "__main__":
         print(
             "\nStopping Syllabot..."
         )
+
         observer.stop()
 
     observer.join()
